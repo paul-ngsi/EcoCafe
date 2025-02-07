@@ -178,7 +178,7 @@ fun LearnNavDrawer(navController: NavController){
     val navigationController = rememberNavController()
     val couroutineScope = rememberCoroutineScope()
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
-    val context = LocalContext.current.applicationContext
+    val context = LocalContext.current // Get the context here
 
     ModalNavigationDrawer(
         drawerState = drawerState,
@@ -196,9 +196,7 @@ fun LearnNavDrawer(navController: NavController){
                     ) {
                         Image(painter = painterResource(id = R.drawable.a), contentDescription = "logo",
                             modifier =  Modifier.fillMaxWidth())
-
                     }
-
                 }
                 Divider()
                 NavigationDrawerItem(label = { Text(text = "Home", color = Blue50, fontWeight = FontWeight.SemiBold) },
@@ -223,7 +221,6 @@ fun LearnNavDrawer(navController: NavController){
                             popUpTo(0)
                         }
                     })
-
             }
         },
     ) {
@@ -277,10 +274,13 @@ fun LearnNavDrawer(navController: NavController){
                     navController = navigationController,
                     authViewModel = AuthViewModel()
                 ) }
-                composable(Screens.SettingsScreen.screens){ SettingsScreen(
-                    navController = navigationController,
-                    authViewModel = AuthViewModel()
-                ) }
+                composable(Screens.SettingsScreen.screens){
+                    SettingsScreen(
+                        navController = navigationController,
+                        authViewModel = AuthViewModel(),
+                        context = context // Pass context here
+                    )
+                }
                 composable(Screens.LoginScreen.screens){ LoginScreen(
                     navController = navigationController,
                     authViewModel = AuthViewModel()
@@ -312,12 +312,9 @@ fun LearnNavDrawer(navController: NavController){
                     viewModel = WasteEntryListViewModel()
                 ) }
             }
-
         }
-
     }
 }
-
 
 @Composable
 fun navDrawer(modifier: Modifier = Modifier) {

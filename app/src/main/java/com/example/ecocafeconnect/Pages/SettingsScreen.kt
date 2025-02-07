@@ -1,5 +1,7 @@
 package com.example.ecocafeconnect.Pages
 
+import android.content.Context
+import android.content.SharedPreferences
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -25,10 +27,12 @@ import com.example.ecocafeconnect.R
 import com.example.ecocafeconnect.ui.theme.Purple40
 
 @Composable
-fun SettingsScreen(modifier: Modifier = Modifier,navController: NavController,authViewModel: AuthViewModel) {
+fun SettingsScreen(modifier: Modifier = Modifier, navController: NavController, authViewModel: AuthViewModel, context: Context) {
 
     val authState by authViewModel.authstate.observeAsState()
 
+    // SharedPreferences initialization
+    val sharedPreferences: SharedPreferences = context.getSharedPreferences("MyPrefs", Context.MODE_PRIVATE)
 
     LaunchedEffect(authState) {
         when (authState) {
@@ -57,7 +61,13 @@ fun SettingsScreen(modifier: Modifier = Modifier,navController: NavController,au
             Text(text = "Settings", fontSize = 28.sp, fontWeight = FontWeight.Bold)
 
             TextButton(onClick = {
+                // Sign out and clear shared preferences
                 authViewModel.signout()
+
+                // Clear SharedPreferences
+                val editor = sharedPreferences.edit()
+                editor.clear()  // Clears all stored data
+                editor.apply()  // Apply changes
             }) {
                 Text(text = "Sign Out and Exit")
             }

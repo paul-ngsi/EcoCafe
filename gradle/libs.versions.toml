@@ -19,6 +19,10 @@ roomCommon = "2.6.1"
 roomKtx = "2.6.1"
 firebaseFirestore = "25.1.0"
 toolsCore = "1.0.0-alpha10"
+appcompat = "1.7.0"
+material = "1.10.0"
+activity = "1.8.0"
+constraintlayout = "2.1.4"
 
 [libraries]
 core-v330 = { module = "com.google.zxing:core", version.ref = "core" }
@@ -45,6 +49,10 @@ androidx-room-common = { group = "androidx.room", name = "room-common", version.
 androidx-room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "roomKtx" }
 firebase-firestore = { group = "com.google.firebase", name = "firebase-firestore", version.ref = "firebaseFirestore" }
 androidx-tools-core = { group = "androidx.privacysandbox.tools", name = "tools-core", version.ref = "toolsCore" }
+androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+androidx-activity = { group = "androidx.activity", name = "activity", version.ref = "activity" }
+androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

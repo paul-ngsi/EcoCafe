@@ -1,19 +1,12 @@
 package com.example.ecocafeconnect.Pages
 
+import android.content.Context
+import android.widget.Toast
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
@@ -24,25 +17,34 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.ecocafeconnect.AuthState
 import com.example.ecocafeconnect.AuthViewModel
-import com.example.ecocafeconnect.Item
 import com.example.ecocafeconnect.R
 import kotlinx.coroutines.delay
 
 @Composable
 fun HomePage(modifier: Modifier = Modifier, navController: NavController, authViewModel: AuthViewModel) {
-    Box(modifier = Modifier.fillMaxSize()
-        .background(Color.White)) {
+    val context = LocalContext.current
+
+    // Fetch the saved email from SharedPreferences
+    val sharedPreferences = context.getSharedPreferences("MyPrefs", Context.MODE_PRIVATE)
+    val savedEmail = sharedPreferences.getString("email", "") ?: ""
+    val emailWithoutDomain = savedEmail.replace("@gmail.com", "")
+
+    // Show different toast based on the saved email
+    Toast.makeText(context, "Hello $emailWithoutDomain", Toast.LENGTH_SHORT).show()
+
+
+    Box(modifier = Modifier.fillMaxSize().background(Color.White)) {
         Box(modifier = Modifier.fillMaxSize()) {
             LazyColumn(
                 modifier = Modifier
@@ -54,12 +56,18 @@ fun HomePage(modifier: Modifier = Modifier, navController: NavController, authVi
 
                 item { Spacer(modifier = Modifier.height(80.dp)) }
 
-                item {
-                    Image(painter = painterResource(id = R.drawable.wastrack), contentDescription = "waste",
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .size(250.dp)
-                            .clickable { navController.navigate("waste") })
+                // Show the waste tracker image only if the user is an admin
+                if (savedEmail == "admin@gmail.com") {
+                    item {
+                        Image(
+                            painter = painterResource(id = R.drawable.wastrack),
+                            contentDescription = "waste",
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .size(250.dp)
+                                .clickable { navController.navigate("waste") }
+                        )
+                    }
                 }
 
                 item {
@@ -91,7 +99,6 @@ fun HomePage(modifier: Modifier = Modifier, navController: NavController, authVi
                 }
 
                 item { Text(text = " ") }
-
             }
         }
     }
@@ -180,4 +187,3 @@ fun Indicator(isSelected: Boolean, modifier: Modifier = Modifier) {
             )
     )
 }
-
